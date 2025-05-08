@@ -29,21 +29,23 @@ test_gen = test_datagen.flow_from_directory(
 
 # 3. Build the CNN model
 model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)),
-    MaxPooling2D((2, 2)),
+    Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)),                             #relu so after scanning the image, the nucleus will output numbers, that number will have negative and positive. Relu will keep positive numbers and convert negative to 0
+    MaxPooling2D((2, 2)),                                                                         #maxPooling will make the image smaller but still enhancing the defected images
 
     Conv2D(64, (3, 3), activation='relu'),
     MaxPooling2D((2, 2)),
 
-    Flatten(),                    # flatten feature maps to a 1D vector
-    Dense(128, activation='relu'),
-    Dropout(0.5),                 # prevent overfitting
+    Flatten(),                                                        # flatten feature maps to a 1D vector
+    Dense(128, activation='relu'),                                     #Dense will create another layer of nucleus to connect to the 2048 nucleus. densewill be 168 nucleus
+    Dropout(0.5),                                                     # prevent overfitting
     Dense(1, activation='sigmoid')# output layer for binary classification
 ])
 
 # 4. Compile the model
 model.compile(
-    optimizer='adam',
+    optimizer='adam',                 #Adam makes training faster and often better without much manual tuning
+                                    #Think of it like cruise control in a car: You still steer and set the speed (your hyperparameters),
+                                    #But Adam automatically adjusts the engine (learning) so the ride is smoother and faster.
     loss='binary_crossentropy',
     metrics=['accuracy']
 )
@@ -51,7 +53,7 @@ model.compile(
 # 5. Train the model
 model.fit(
     train_gen,
-    epochs=10,
+    epochs=10, if its  100 photos. it will scan it again 10 times
     validation_data=test_gen
 )
 
